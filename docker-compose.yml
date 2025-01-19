@@ -1,0 +1,17 @@
+version: '3'
+services:
+  python3:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: 'ai-news'
+    working_dir: '/workspace'  # 作業ディレクトリを /workspace に設定
+    volumes:
+      - ./app:/workspace/app   # ローカルの app/ ディレクトリをコンテナ内にマウント
+      - ./app/infrastructure/sqlite/db:/workspace/app/infrastructure/sqlite/db
+    ports:
+      - "8080:8080"            # 8000 番ポートを公開
+    env_file: .env             # 環境変数を定義したファイルを読み込む場合
+    environment:
+      - PYTHONPATH=/workspace  # PYTHONPATH を /workspace に追加
